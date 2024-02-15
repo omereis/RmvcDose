@@ -122,9 +122,17 @@ namespace RmvDose
                 int nRecords = m_rmvData.Parse(Lines);
                 txtbxRecords.Text = nRecords.ToString();
             }
+            CalcRate ();
+            GetDeviceDose();
+            CalculatedAccumDose();
 		}
 //-----------------------------------------------------------------------------
 		private void btnRate_Click(object sender, EventArgs e)
+		{
+            CalcRate ();
+        }
+//-----------------------------------------------------------------------------
+		private void CalcRate ()
 		{
             Series ser = TMisc.FindSeriesByName (chartRate, "Rate");
             if (ser == null) {
@@ -142,10 +150,13 @@ namespace RmvDose
 //-----------------------------------------------------------------------------
 		private void btnDose_Click(object sender, EventArgs e)
 		{
+            GetDeviceDose();
+        }
+//-----------------------------------------------------------------------------
+		private void GetDeviceDose() {
             Series ser = TMisc.FindSeriesByName (chartRate, "Dose");
             if (ser == null)
                 ser = TMisc.StartFastLineSeries("Dose");
-            //chartDose.Series.Clear();
             for (int n=0 ; n < m_rmvData.Records.Count ; n++) {
                 TRmvcRecord rec = (TRmvcRecord) m_rmvData.Records[n];
                 ser.Points.AddXY (rec.SampleTime, rec.Dose);
@@ -158,15 +169,68 @@ namespace RmvDose
             serTarget.BorderWidth = serDemo.BorderWidth;
 }
 //-----------------------------------------------------------------------------
+		private void btnCalcDose_Click(object sender, EventArgs e)
+		{
+            CalculatedAccumDose();
+        }
+        private void CalculatedAccumDose() {
+            m_rmvData.CalculateDose();
+            Series ser = TMisc.FindSeriesByName (chartDose, "Calculated Dose");
+            if (ser == null) { 
+                ser = TMisc.StartFastLineSeries("Calculated Dose");
+                chartDose.Series.Add (ser);
+            }
+            for (int n=0 ; n < m_rmvData.Records.Count ; n++)
+                ser.Points.AddXY (((TRmvcRecord)m_rmvData.Records[n]).SampleTime, (double) m_rmvData.CalcDose[n]);
+		}
+
+//-----------------------------------------------------------------------------
+		private void btnRateSer_Click(object sender, EventArgs e)
+		{
+            Series ser = TMisc.FindSeriesByName (chartRate, "Rate");
+            EditSeries (ser);
+		}
+//-----------------------------------------------------------------------------
 		private void btnDoseSer_Click(object sender, EventArgs e)
 		{
-            dlgEditSeries dlg = new dlgEditSeries();
             Series ser = TMisc.FindSeriesByName (chartDose, "Dose");
+            EditSeries (ser);
+		}
+//-----------------------------------------------------------------------------
+		private void btnCalcDoseSer_Click(object sender, EventArgs e)
+		{
+            Series ser = TMisc.FindSeriesByName (chartDose, "Calculated Dose");
+            EditSeries (ser);
+		}
+//-----------------------------------------------------------------------------
+		private void EditSeries (Series ser) {
+            dlgEditSeries dlg = new dlgEditSeries();
             Series serEdit = TMisc.InitSeries (ser);
             if (dlg.Execute(serEdit))
                 AssignSerParams (ser, serEdit);
-                //chartDose.Series[1] = TMisc.InitSeries (ser);
+        }
+//-----------------------------------------------------------------------------
+        private void CopyToClipboard (Chart chart) {
+            using (MemoryStream ms = new MemoryStream()) {
+                chart.SaveImage(ms, ChartImageFormat.Bmp);
+                Bitmap bm = new Bitmap(ms);
+                Clipboard.SetImage(bm);
+            }
+        }
+//-----------------------------------------------------------------------------
+		private void btnCopyRate_Click_1(object sender, EventArgs e)
+		{
+            CopyToClipboard (chartRate);
+		}
+//-----------------------------------------------------------------------------
+		private void btnCopyDose_Click(object sender, EventArgs e)
+		{
+            CopyToClipboard (chartDose);
+		}
 
+		private void btnSaveDose_Click(object sender, EventArgs e)
+		{
+            chartDose.SaveImage("file.txt", ChartImageFormat.Jpeg);
 		}
 		//-----------------------------------------------------------------------------
 	}

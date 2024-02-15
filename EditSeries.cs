@@ -44,14 +44,12 @@ namespace RmvDose
 //-----------------------------------------------------------------------------
 		private void Download (Series ser) {
 			udWidth.Value = ser.BorderWidth;
-			//btnColor.BackColor = ser.BorderColor;
 			panelColor.BackColor = ser.Color;
 		}
 //-----------------------------------------------------------------------------
 		private void Upload (Series ser) {
-			ser.BorderWidth = (int) udWidth.Value;
-			ser.BorderColor = btnColor.BackColor;
-			ser.Color = panelColor.BackColor;
+			ser.BorderWidth = m_ser.BorderWidth;
+			ser.Color = m_ser.Color;
 		}
 //-----------------------------------------------------------------------------
 		private void btnColor_Click(object sender, EventArgs e)
@@ -76,6 +74,13 @@ namespace RmvDose
 				m_ser.Color = dlgEditColor.Color;
 				chartDemo.Invalidate();
 			}
+		}
+//-----------------------------------------------------------------------------
+		private void udWidth_ValueChanged(object sender, EventArgs e)
+		{
+			int nWidth = (int) udWidth.Value;
+			if (m_ser != null)
+				m_ser.BorderWidth = nWidth;
 		}
 	}
 }

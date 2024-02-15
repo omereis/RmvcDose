@@ -28,10 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-			System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-			System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-			System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-			System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+			System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+			System.Windows.Forms.DataVisualization.Charting.Legend legend7 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+			System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
+			System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea8 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+			System.Windows.Forms.DataVisualization.Charting.Legend legend8 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+			System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.btnOpen = new System.Windows.Forms.Button();
 			this.dlgOpenCsv = new System.Windows.Forms.OpenFileDialog();
@@ -52,6 +54,13 @@
 			this.tabDose = new System.Windows.Forms.TabPage();
 			this.chartDose = new System.Windows.Forms.DataVisualization.Charting.Chart();
 			this.btnDoseSer = new System.Windows.Forms.Button();
+			this.btnCalcDose = new System.Windows.Forms.Button();
+			this.btnRateEdit = new System.Windows.Forms.Button();
+			this.btnCalcDoseSer = new System.Windows.Forms.Button();
+			this.btnCopyDose = new System.Windows.Forms.Button();
+			this.btnSaveDose = new System.Windows.Forms.Button();
+			this.btnSaveRate = new System.Windows.Forms.Button();
+			this.btnCopyRate = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.gridCSV)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.chartRate)).BeginInit();
 			this.tabControl1.SuspendLayout();
@@ -143,22 +152,24 @@
 			// 
 			// btnRate
 			// 
-			this.btnRate.Location = new System.Drawing.Point(357, 159);
+			this.btnRate.Location = new System.Drawing.Point(357, 356);
 			this.btnRate.Name = "btnRate";
 			this.btnRate.Size = new System.Drawing.Size(75, 23);
 			this.btnRate.TabIndex = 4;
 			this.btnRate.Text = "Rate";
 			this.btnRate.UseVisualStyleBackColor = true;
+			this.btnRate.Visible = false;
 			this.btnRate.Click += new System.EventHandler(this.btnRate_Click);
 			// 
 			// btnDose
 			// 
-			this.btnDose.Location = new System.Drawing.Point(357, 188);
+			this.btnDose.Location = new System.Drawing.Point(353, 385);
 			this.btnDose.Name = "btnDose";
 			this.btnDose.Size = new System.Drawing.Size(75, 23);
 			this.btnDose.TabIndex = 5;
 			this.btnDose.Text = "Dose";
 			this.btnDose.UseVisualStyleBackColor = true;
+			this.btnDose.Visible = false;
 			this.btnDose.Click += new System.EventHandler(this.btnDose_Click);
 			// 
 			// btnParse
@@ -183,14 +194,17 @@
 			this.chartRate.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			chartArea1.Name = "ChartArea1";
-			this.chartRate.ChartAreas.Add(chartArea1);
-			this.chartRate.Location = new System.Drawing.Point(6, 7);
+			chartArea7.Name = "ChartArea1";
+			this.chartRate.ChartAreas.Add(chartArea7);
+			legend7.Name = "Legend1";
+			this.chartRate.Legends.Add(legend7);
+			this.chartRate.Location = new System.Drawing.Point(6, 36);
 			this.chartRate.Name = "chartRate";
-			series1.ChartArea = "ChartArea1";
-			series1.Name = "Series1";
-			this.chartRate.Series.Add(series1);
-			this.chartRate.Size = new System.Drawing.Size(489, 370);
+			series7.ChartArea = "ChartArea1";
+			series7.Legend = "Legend1";
+			series7.Name = "Series1";
+			this.chartRate.Series.Add(series7);
+			this.chartRate.Size = new System.Drawing.Size(489, 358);
 			this.chartRate.TabIndex = 8;
 			this.chartRate.Text = "chart1";
 			// 
@@ -201,30 +215,37 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.tabControl1.Controls.Add(this.tabRate);
 			this.tabControl1.Controls.Add(this.tabDose);
-			this.tabControl1.Location = new System.Drawing.Point(434, 57);
+			this.tabControl1.Location = new System.Drawing.Point(438, 12);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(509, 408);
+			this.tabControl1.Size = new System.Drawing.Size(509, 425);
 			this.tabControl1.TabIndex = 9;
 			// 
 			// tabRate
 			// 
+			this.tabRate.Controls.Add(this.btnSaveRate);
+			this.tabRate.Controls.Add(this.btnRateEdit);
+			this.tabRate.Controls.Add(this.btnCopyRate);
 			this.tabRate.Controls.Add(this.chartRate);
 			this.tabRate.Location = new System.Drawing.Point(4, 22);
 			this.tabRate.Name = "tabRate";
 			this.tabRate.Padding = new System.Windows.Forms.Padding(3);
-			this.tabRate.Size = new System.Drawing.Size(501, 383);
+			this.tabRate.Size = new System.Drawing.Size(501, 399);
 			this.tabRate.TabIndex = 0;
 			this.tabRate.Text = "Rate";
 			this.tabRate.UseVisualStyleBackColor = true;
 			// 
 			// tabDose
 			// 
+			this.tabDose.Controls.Add(this.btnCalcDoseSer);
+			this.tabDose.Controls.Add(this.btnSaveDose);
+			this.tabDose.Controls.Add(this.btnCopyDose);
+			this.tabDose.Controls.Add(this.btnDoseSer);
 			this.tabDose.Controls.Add(this.chartDose);
 			this.tabDose.Location = new System.Drawing.Point(4, 22);
 			this.tabDose.Name = "tabDose";
 			this.tabDose.Padding = new System.Windows.Forms.Padding(3);
-			this.tabDose.Size = new System.Drawing.Size(501, 382);
+			this.tabDose.Size = new System.Drawing.Size(501, 399);
 			this.tabDose.TabIndex = 1;
 			this.tabDose.Text = "Dose";
 			this.tabDose.UseVisualStyleBackColor = true;
@@ -234,20 +255,23 @@
 			this.chartDose.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			chartArea2.Name = "ChartArea1";
-			this.chartDose.ChartAreas.Add(chartArea2);
-			this.chartDose.Location = new System.Drawing.Point(6, 7);
+			chartArea8.Name = "ChartArea1";
+			this.chartDose.ChartAreas.Add(chartArea8);
+			legend8.Name = "Legend1";
+			this.chartDose.Legends.Add(legend8);
+			this.chartDose.Location = new System.Drawing.Point(6, 30);
 			this.chartDose.Name = "chartDose";
-			series2.ChartArea = "ChartArea1";
-			series2.Name = "Series1";
-			this.chartDose.Series.Add(series2);
-			this.chartDose.Size = new System.Drawing.Size(489, 369);
+			series8.ChartArea = "ChartArea1";
+			series8.Legend = "Legend1";
+			series8.Name = "Series1";
+			this.chartDose.Series.Add(series8);
+			this.chartDose.Size = new System.Drawing.Size(489, 363);
 			this.chartDose.TabIndex = 9;
 			this.chartDose.Text = "chart1";
 			// 
 			// btnDoseSer
 			// 
-			this.btnDoseSer.Location = new System.Drawing.Point(444, 30);
+			this.btnDoseSer.Location = new System.Drawing.Point(227, 3);
 			this.btnDoseSer.Name = "btnDoseSer";
 			this.btnDoseSer.Size = new System.Drawing.Size(86, 23);
 			this.btnDoseSer.TabIndex = 10;
@@ -255,12 +279,82 @@
 			this.btnDoseSer.UseVisualStyleBackColor = true;
 			this.btnDoseSer.Click += new System.EventHandler(this.btnDoseSer_Click);
 			// 
+			// btnCalcDose
+			// 
+			this.btnCalcDose.Location = new System.Drawing.Point(353, 414);
+			this.btnCalcDose.Name = "btnCalcDose";
+			this.btnCalcDose.Size = new System.Drawing.Size(75, 23);
+			this.btnCalcDose.TabIndex = 11;
+			this.btnCalcDose.Text = "Calculate";
+			this.btnCalcDose.UseVisualStyleBackColor = true;
+			this.btnCalcDose.Visible = false;
+			this.btnCalcDose.Click += new System.EventHandler(this.btnCalcDose_Click);
+			// 
+			// btnRateEdit
+			// 
+			this.btnRateEdit.Location = new System.Drawing.Point(245, 7);
+			this.btnRateEdit.Name = "btnRateEdit";
+			this.btnRateEdit.Size = new System.Drawing.Size(87, 23);
+			this.btnRateEdit.TabIndex = 12;
+			this.btnRateEdit.Text = "Rate Series...";
+			this.btnRateEdit.UseVisualStyleBackColor = true;
+			this.btnRateEdit.Click += new System.EventHandler(this.btnRateSer_Click);
+			// 
+			// btnCalcDoseSer
+			// 
+			this.btnCalcDoseSer.Location = new System.Drawing.Point(319, 6);
+			this.btnCalcDoseSer.Name = "btnCalcDoseSer";
+			this.btnCalcDoseSer.Size = new System.Drawing.Size(104, 23);
+			this.btnCalcDoseSer.TabIndex = 13;
+			this.btnCalcDoseSer.Text = "Calculated Series...";
+			this.btnCalcDoseSer.UseVisualStyleBackColor = true;
+			this.btnCalcDoseSer.Click += new System.EventHandler(this.btnCalcDoseSer_Click);
+			// 
+			// btnCopyDose
+			// 
+			this.btnCopyDose.Location = new System.Drawing.Point(39, 5);
+			this.btnCopyDose.Name = "btnCopyDose";
+			this.btnCopyDose.Size = new System.Drawing.Size(75, 23);
+			this.btnCopyDose.TabIndex = 10;
+			this.btnCopyDose.Text = "Copy";
+			this.btnCopyDose.UseVisualStyleBackColor = true;
+			this.btnCopyDose.Click += new System.EventHandler(this.btnCopyDose_Click);
+			// 
+			// btnSaveDose
+			// 
+			this.btnSaveDose.Location = new System.Drawing.Point(146, 6);
+			this.btnSaveDose.Name = "btnSaveDose";
+			this.btnSaveDose.Size = new System.Drawing.Size(75, 23);
+			this.btnSaveDose.TabIndex = 11;
+			this.btnSaveDose.Text = "Save...";
+			this.btnSaveDose.UseVisualStyleBackColor = true;
+			this.btnSaveDose.Click += new System.EventHandler(this.btnSaveDose_Click);
+			// 
+			// btnSaveRate
+			// 
+			this.btnSaveRate.Location = new System.Drawing.Point(153, 7);
+			this.btnSaveRate.Name = "btnSaveRate";
+			this.btnSaveRate.Size = new System.Drawing.Size(75, 23);
+			this.btnSaveRate.TabIndex = 13;
+			this.btnSaveRate.Text = "Save...";
+			this.btnSaveRate.UseVisualStyleBackColor = true;
+			// 
+			// btnCopyRate
+			// 
+			this.btnCopyRate.Location = new System.Drawing.Point(46, 6);
+			this.btnCopyRate.Name = "btnCopyRate";
+			this.btnCopyRate.Size = new System.Drawing.Size(75, 23);
+			this.btnCopyRate.TabIndex = 12;
+			this.btnCopyRate.Text = "Copy";
+			this.btnCopyRate.UseVisualStyleBackColor = true;
+			this.btnCopyRate.Click += new System.EventHandler(this.btnCopyRate_Click_1);
+			// 
 			// main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(955, 449);
-			this.Controls.Add(this.btnDoseSer);
+			this.Controls.Add(this.btnCalcDose);
 			this.Controls.Add(this.tabControl1);
 			this.Controls.Add(this.txtbxRecords);
 			this.Controls.Add(this.btnParse);
@@ -306,6 +400,13 @@
 		private System.Windows.Forms.TabPage tabDose;
 		private System.Windows.Forms.DataVisualization.Charting.Chart chartDose;
 		private System.Windows.Forms.Button btnDoseSer;
+		private System.Windows.Forms.Button btnCalcDose;
+		private System.Windows.Forms.Button btnRateEdit;
+		private System.Windows.Forms.Button btnCalcDoseSer;
+		private System.Windows.Forms.Button btnSaveDose;
+		private System.Windows.Forms.Button btnCopyDose;
+		private System.Windows.Forms.Button btnSaveRate;
+		private System.Windows.Forms.Button btnCopyRate;
 	}
 }
 

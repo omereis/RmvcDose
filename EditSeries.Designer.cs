@@ -28,8 +28,8 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-			System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+			System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+			System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
 			this.chartDemo = new System.Windows.Forms.DataVisualization.Charting.Chart();
 			this.btnOK = new System.Windows.Forms.Button();
 			this.btnCancel = new System.Windows.Forms.Button();
@@ -44,13 +44,13 @@
 			// 
 			// chartDemo
 			// 
-			chartArea3.Name = "ChartArea1";
-			this.chartDemo.ChartAreas.Add(chartArea3);
+			chartArea1.Name = "ChartArea1";
+			this.chartDemo.ChartAreas.Add(chartArea1);
 			this.chartDemo.Location = new System.Drawing.Point(84, 61);
 			this.chartDemo.Name = "chartDemo";
-			series3.ChartArea = "ChartArea1";
-			series3.Name = "Series1";
-			this.chartDemo.Series.Add(series3);
+			series1.ChartArea = "ChartArea1";
+			series1.Name = "Series1";
+			this.chartDemo.Series.Add(series1);
 			this.chartDemo.Size = new System.Drawing.Size(508, 355);
 			this.chartDemo.TabIndex = 0;
 			this.chartDemo.Text = "chart1";
@@ -96,6 +96,7 @@
             0,
             0,
             0});
+			this.udWidth.ValueChanged += new System.EventHandler(this.udWidth_ValueChanged);
 			// 
 			// label1
 			// 
