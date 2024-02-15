@@ -1,0 +1,10 @@
+C:\Users\Temp\Documents\Projects\Rotem\SQA\RmvDose\bin\Debug\RmvDose.exe.config
+C:\Users\Temp\Documents\Projects\Rotem\SQA\RmvDose\bin\Debug\RmvDose.exe
+C:\Users\Temp\Documents\Projects\Rotem\SQA\RmvDose\bin\Debug\RmvDose.pdb
+C:\Users\Temp\Documents\Projects\Rotem\SQA\RmvDose\obj\Debug\RmvDose.csproj.AssemblyReference.cache
+C:\Users\Temp\Documents\Projects\Rotem\SQA\RmvDose\obj\Debug\RmvDose.main.resources
+C:\Users\Temp\Documents\Projects\Rotem\SQA\RmvDose\obj\Debug\RmvDose.Properties.Resources.resources
+C:\Users\Temp\Documents\Projects\Rotem\SQA\RmvDose\obj\Debug\RmvDose.csproj.GenerateResource.cache
+C:\Users\Temp\Documents\Projects\Rotem\SQA\RmvDose\obj\Debug\RmvDose.csproj.CoreCompileInputs.cache
+C:\Users\Temp\Documents\Projects\Rotem\SQA\RmvDose\obj\Debug\RmvDose.exe
+C:\Users\Temp\Documents\Projects\Rotem\SQA\RmvDose\obj\Debug\RmvDose.pdb
