@@ -140,8 +140,13 @@
 			this.Controls.Add(this.btnCancel);
 			this.Controls.Add(this.btnOK);
 			this.Controls.Add(this.chartDemo);
+			this.MaximizeBox = false;
+			this.MinimizeBox = false;
 			this.Name = "dlgEditSeries";
-			this.Text = "EditSeries";
+			this.ShowIcon = false;
+			this.ShowInTaskbar = false;
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+			this.Text = "Edit Series";
 			((System.ComponentModel.ISupportInitialize)(this.chartDemo)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.udWidth)).EndInit();
 			this.ResumeLayout(false);

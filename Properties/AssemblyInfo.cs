@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("RmvDose")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("RmvDose, Feb. 19, 2024")]
+[assembly: AssemblyDescription("Rmvc CSV Output display")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Rotem Industries")]
 [assembly: AssemblyProduct("RmvDose")]
-[assembly: AssemblyCopyright("Copyright ©  2024")]
+[assembly: AssemblyCopyright("Omer Eisenberg, Copyright ©  2024")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

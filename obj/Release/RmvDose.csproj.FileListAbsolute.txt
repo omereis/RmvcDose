@@ -1,0 +1,12 @@
+C:\Users\Omer\Documents\Projects\Rotem\RmvcDose\bin\Release\RmvDose.exe.config
+C:\Users\Omer\Documents\Projects\Rotem\RmvcDose\bin\Release\RmvDose.exe
+C:\Users\Omer\Documents\Projects\Rotem\RmvcDose\bin\Release\RmvDose.pdb
+C:\Users\Omer\Documents\Projects\Rotem\RmvcDose\obj\Release\RmvDose.csproj.AssemblyReference.cache
+C:\Users\Omer\Documents\Projects\Rotem\RmvcDose\obj\Release\RmvDose.dlgAbout.resources
+C:\Users\Omer\Documents\Projects\Rotem\RmvcDose\obj\Release\RmvDose.dlgEditSeries.resources
+C:\Users\Omer\Documents\Projects\Rotem\RmvcDose\obj\Release\RmvDose.main.resources
+C:\Users\Omer\Documents\Projects\Rotem\RmvcDose\obj\Release\RmvDose.Properties.Resources.resources
+C:\Users\Omer\Documents\Projects\Rotem\RmvcDose\obj\Release\RmvDose.csproj.GenerateResource.cache
+C:\Users\Omer\Documents\Projects\Rotem\RmvcDose\obj\Release\RmvDose.csproj.CoreCompileInputs.cache
+C:\Users\Omer\Documents\Projects\Rotem\RmvcDose\obj\Release\RmvDose.exe
+C:\Users\Omer\Documents\Projects\Rotem\RmvcDose\obj\Release\RmvDose.pdb

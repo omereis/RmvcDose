@@ -121,7 +121,9 @@ namespace RmvDose
                 m_rmvData = new TRmvcData();
                 int nRecords = m_rmvData.Parse(Lines);
                 txtbxRecords.Text = nRecords.ToString();
-            }
+                chartDose.Series.Clear();
+				chartRate.Series.Clear();
+			}
             CalcRate ();
             GetDeviceDose();
             CalculatedAccumDose();
@@ -227,11 +229,58 @@ namespace RmvDose
 		{
             CopyToClipboard (chartDose);
 		}
-
+//-----------------------------------------------------------------------------
 		private void btnSaveDose_Click(object sender, EventArgs e)
 		{
             chartDose.SaveImage("file.txt", ChartImageFormat.Jpeg);
 		}
-		//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+		private void btnSaveRate_Click(object sender, EventArgs e)
+		{
+            if (dlgSavePic.ShowDialog() == DialogResult.OK) {
+				ChartImageFormat format = GetFormatFromExt (dlgSavePic.FileName);
+                chartRate.SaveImage(dlgSavePic.FileName, format);
+			}
+		}
+//-----------------------------------------------------------------------------
+		public static ChartImageFormat GetFormatFromExt(string strName) {
+            ChartImageFormat format = ChartImageFormat.Bmp;
+            string strExt = Path.GetExtension(strName).ToLower().Substring(1, 3);
+            if (strExt == "jpg")
+                format = ChartImageFormat.Jpeg;
+            else if (strExt == "png")
+                format = ChartImageFormat.Png;
+			else if (strExt == "gif")
+				format = ChartImageFormat.Gif;
+			return (format);
+
+		}
+//-----------------------------------------------------------------------------
+		private void btnAbout_Click(object sender, EventArgs e)
+		{
+			dlgAbout dlg = new dlgAbout();
+            dlg.Execute();
+		}
+//-----------------------------------------------------------------------------
+		private void OnIdle (object sender, EventArgs e) {
+            bool fParse = false;
+            if (Lines != null)
+                fParse = Lines.Count > 0;
+			btnParse.Enabled = fParse;
+			btnRateEdit.Enabled = chartRate.Series.Count > 0;
+			btnDoseSer.Enabled = chartDose.Series.Count > 0;
+			btnCalcDoseSer.Enabled = chartDose.Series.Count > 0;
+		}
+//-----------------------------------------------------------------------------
+		private void main_Load(object sender, EventArgs e)
+		{
+            Application.Idle += OnIdle;
+		}
+//-----------------------------------------------------------------------------
+		private void main_FormClosed(object sender, FormClosedEventArgs e)
+		{
+			Application.Idle -= OnIdle;
+		}
+//-----------------------------------------------------------------------------
 	}
 }
