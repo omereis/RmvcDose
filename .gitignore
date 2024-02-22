@@ -34,3 +34,4 @@
 # C# temporary files
 *.pdb
 *.vsidx
+*.cache
