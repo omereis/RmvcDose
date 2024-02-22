@@ -124,6 +124,7 @@ namespace RmvDose
                 chartDose.Series.Clear();
 				chartRate.Series.Clear();
 			}
+            //clboxDose.Items.Clear();
             CalcRate ();
             GetDeviceDose();
             CalculatedAccumDose();
@@ -164,6 +165,7 @@ namespace RmvDose
                 ser.Points.AddXY (rec.SampleTime, rec.Dose);
             }
 			chartDose.Series.Add(ser);
+            //clboxDose.Items.Add(ser);
 		}
 //-----------------------------------------------------------------------------
 		private void AssignSerParams (Series serTarget, Series serDemo) {
@@ -177,13 +179,26 @@ namespace RmvDose
         }
         private void CalculatedAccumDose() {
             m_rmvData.CalculateDose();
-            Series ser = TMisc.FindSeriesByName (chartDose, "Calculated Dose");
+            Series serNorm=null, ser = TMisc.FindSeriesByName (chartDose, "Calculated Dose");
             if (ser == null) { 
                 ser = TMisc.StartFastLineSeries("Calculated Dose");
                 chartDose.Series.Add (ser);
+                //.Items.Add (ser);
             }
-            for (int n=0 ; n < m_rmvData.Records.Count ; n++)
+            TRmvcRecord rec = (TRmvcRecord) m_rmvData.Records[0];
+            if (rec.Rate > 0) {
+                serNorm = TMisc.FindSeriesByName (chartDose, "Normalized Dose");
+                if (serNorm == null) { 
+                    serNorm = TMisc.StartFastLineSeries("Normalized Dose");
+                    chartDose.Series.Add (serNorm);
+                    //clboxDose.Items.Add (serNorm);
+                }
+            }
+            for (int n=0 ; n < m_rmvData.Records.Count ; n++) {
                 ser.Points.AddXY (((TRmvcRecord)m_rmvData.Records[n]).SampleTime, (double) m_rmvData.CalcDose[n]);
+                if (serNorm != null)
+                    serNorm.Points.AddXY (((TRmvcRecord)m_rmvData.Records[n]).SampleTime, (double) m_rmvData.CalcDose[n] - rec.Rate);
+             }
 		}
 
 //-----------------------------------------------------------------------------
@@ -280,6 +295,12 @@ namespace RmvDose
 		private void main_FormClosed(object sender, FormClosedEventArgs e)
 		{
 			Application.Idle -= OnIdle;
+		}
+//-----------------------------------------------------------------------------
+		private void btnNormSer_Click(object sender, EventArgs e)
+		{
+            Series ser = TMisc.FindSeriesByName (chartDose, "Normalized Dose");
+            EditSeries (ser);
 		}
 //-----------------------------------------------------------------------------
 	}

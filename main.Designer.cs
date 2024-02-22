@@ -63,6 +63,7 @@
 			this.btnCalcDose = new System.Windows.Forms.Button();
 			this.dlgSavePic = new System.Windows.Forms.SaveFileDialog();
 			this.btnAbout = new System.Windows.Forms.Button();
+			this.btnNormSer = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.gridCSV)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.chartRate)).BeginInit();
 			this.tabControl1.SuspendLayout();
@@ -198,7 +199,7 @@
 			series1.Legend = "Legend1";
 			series1.Name = "Series1";
 			this.chartRate.Series.Add(series1);
-			this.chartRate.Size = new System.Drawing.Size(489, 358);
+			this.chartRate.Size = new System.Drawing.Size(401, 358);
 			this.chartRate.TabIndex = 8;
 			this.chartRate.Text = "chart1";
 			// 
@@ -212,7 +213,7 @@
 			this.tabControl1.Location = new System.Drawing.Point(438, 12);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(509, 425);
+			this.tabControl1.Size = new System.Drawing.Size(533, 425);
 			this.tabControl1.TabIndex = 9;
 			// 
 			// tabRate
@@ -224,7 +225,7 @@
 			this.tabRate.Location = new System.Drawing.Point(4, 22);
 			this.tabRate.Name = "tabRate";
 			this.tabRate.Padding = new System.Windows.Forms.Padding(3);
-			this.tabRate.Size = new System.Drawing.Size(501, 399);
+			this.tabRate.Size = new System.Drawing.Size(525, 399);
 			this.tabRate.TabIndex = 0;
 			this.tabRate.Text = "Rate";
 			this.tabRate.UseVisualStyleBackColor = true;
@@ -261,6 +262,7 @@
 			// 
 			// tabDose
 			// 
+			this.tabDose.Controls.Add(this.btnNormSer);
 			this.tabDose.Controls.Add(this.btnCalcDoseSer);
 			this.tabDose.Controls.Add(this.btnSaveDose);
 			this.tabDose.Controls.Add(this.btnCopyDose);
@@ -269,14 +271,14 @@
 			this.tabDose.Location = new System.Drawing.Point(4, 22);
 			this.tabDose.Name = "tabDose";
 			this.tabDose.Padding = new System.Windows.Forms.Padding(3);
-			this.tabDose.Size = new System.Drawing.Size(501, 399);
+			this.tabDose.Size = new System.Drawing.Size(525, 399);
 			this.tabDose.TabIndex = 1;
 			this.tabDose.Text = "Dose";
 			this.tabDose.UseVisualStyleBackColor = true;
 			// 
 			// btnCalcDoseSer
 			// 
-			this.btnCalcDoseSer.Location = new System.Drawing.Point(319, 4);
+			this.btnCalcDoseSer.Location = new System.Drawing.Point(270, 6);
 			this.btnCalcDoseSer.Name = "btnCalcDoseSer";
 			this.btnCalcDoseSer.Size = new System.Drawing.Size(124, 23);
 			this.btnCalcDoseSer.TabIndex = 13;
@@ -286,7 +288,7 @@
 			// 
 			// btnSaveDose
 			// 
-			this.btnSaveDose.Location = new System.Drawing.Point(146, 4);
+			this.btnSaveDose.Location = new System.Drawing.Point(87, 6);
 			this.btnSaveDose.Name = "btnSaveDose";
 			this.btnSaveDose.Size = new System.Drawing.Size(75, 23);
 			this.btnSaveDose.TabIndex = 11;
@@ -296,7 +298,7 @@
 			// 
 			// btnCopyDose
 			// 
-			this.btnCopyDose.Location = new System.Drawing.Point(39, 4);
+			this.btnCopyDose.Location = new System.Drawing.Point(6, 4);
 			this.btnCopyDose.Name = "btnCopyDose";
 			this.btnCopyDose.Size = new System.Drawing.Size(75, 23);
 			this.btnCopyDose.TabIndex = 10;
@@ -306,7 +308,7 @@
 			// 
 			// btnDoseSer
 			// 
-			this.btnDoseSer.Location = new System.Drawing.Point(227, 4);
+			this.btnDoseSer.Location = new System.Drawing.Point(178, 6);
 			this.btnDoseSer.Name = "btnDoseSer";
 			this.btnDoseSer.Size = new System.Drawing.Size(86, 23);
 			this.btnDoseSer.TabIndex = 10;
@@ -329,7 +331,7 @@
 			series2.Legend = "Legend1";
 			series2.Name = "Series1";
 			this.chartDose.Series.Add(series2);
-			this.chartDose.Size = new System.Drawing.Size(489, 363);
+			this.chartDose.Size = new System.Drawing.Size(513, 363);
 			this.chartDose.TabIndex = 9;
 			this.chartDose.Text = "chart1";
 			// 
@@ -359,11 +361,21 @@
 			this.btnAbout.UseVisualStyleBackColor = true;
 			this.btnAbout.Click += new System.EventHandler(this.btnAbout_Click);
 			// 
+			// btnNormSer
+			// 
+			this.btnNormSer.Location = new System.Drawing.Point(400, 6);
+			this.btnNormSer.Name = "btnNormSer";
+			this.btnNormSer.Size = new System.Drawing.Size(75, 23);
+			this.btnNormSer.TabIndex = 14;
+			this.btnNormSer.Text = "Normalized...";
+			this.btnNormSer.UseVisualStyleBackColor = true;
+			this.btnNormSer.Click += new System.EventHandler(this.btnNormSer_Click);
+			// 
 			// main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(955, 449);
+			this.ClientSize = new System.Drawing.Size(983, 449);
 			this.Controls.Add(this.btnAbout);
 			this.Controls.Add(this.btnCalcDose);
 			this.Controls.Add(this.tabControl1);
@@ -419,6 +431,7 @@
 		private System.Windows.Forms.Button btnCopyRate;
 		private System.Windows.Forms.SaveFileDialog dlgSavePic;
 		private System.Windows.Forms.Button btnAbout;
+		private System.Windows.Forms.Button btnNormSer;
 	}
 }
 
