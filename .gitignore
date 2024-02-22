@@ -35,3 +35,6 @@
 *.pdb
 *.vsidx
 *.cache
+obj/Debug/*txt
+obj/Release/*txt
+*.suo
