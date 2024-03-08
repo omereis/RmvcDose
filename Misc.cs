@@ -1,6 +1,8 @@
 ﻿/*****************************************************************************\
 |                                  misc.cs                                    |
 \*****************************************************************************/
+using RmvDose.Properties;
+using RmvDose;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,6 +60,19 @@ namespace RotemRadiation
 			for (int n=0 ; n < 100 ;  n++) 
 				serNew.Points.AddY (rnd.NextDouble ());
 			return (serNew);
+		}
+//-----------------------------------------------------------------------------
+		public static TSourceData FindSourceByName (TSourceData[] aSources, string strSrc) {
+			TSourceData src=null;
+			
+			if (aSources != null) {
+				for (int n=0 ; (n < aSources.Length) && (src == null) ; n++) {
+					if (aSources[n] != null)
+						if (aSources[n].Source == strSrc)
+							src = aSources[n];
+				}
+			}
+			return (src);
 		}
 	}
 }

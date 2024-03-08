@@ -17,6 +17,8 @@ using System.Windows.Forms.DataVisualization.Charting;
 //-----------------------------------------------------------------------------
 using RotemRadiation;
 using System.Runtime.ConstrainedExecution;
+using RmvDose.Properties;
+using System.Security.Cryptography.X509Certificates;
 //-----------------------------------------------------------------------------
 namespace RmvDose
 {
@@ -24,7 +26,12 @@ namespace RmvDose
     {
         private ArrayList m_alLines;
         private TRmvcData m_rmvData;
+		private TSourceData[] m_Sources;
+        private Point m_ptMouse;
+        private Chart m_chartEditSer = null;
+        private Series m_serEdit = null;
         public ArrayList Lines {get{return(m_alLines);}set{m_alLines=value;}}
+		public TSourceData[] Sources {get{return(m_Sources);}set{m_Sources=value;}}
 //-----------------------------------------------------------------------------
         public main()
         {
@@ -32,6 +39,7 @@ namespace RmvDose
             Lines = null;
             chartRate.Series.Clear();
             chartDose.Series.Clear();
+            m_ptMouse = new Point(0,0);
         }
 //-----------------------------------------------------------------------------
         private void btnOpen_Click(object sender, EventArgs e)
@@ -117,19 +125,150 @@ namespace RmvDose
 //-----------------------------------------------------------------------------
 		private void btnParse_Click(object sender, EventArgs e)
 		{
+            TRmvcRecord rec;
+            string strSource="";
+            Sources = null;//new TSourceData[1];
             if (Lines.Count > 0) {
+                rec = new TRmvcRecord();
+                for (int n=0 ; n < Lines.Count ; n++) {
+                    string[] astr = (string[]) Lines[n];
+                    if (rec.ParseFromRmvc (astr, ref strSource))
+                        AddRrecordToSource (rec, strSource);
+                }
+                if (Sources != null)
+                    if (Sources.Length > 0)
+                        PlotData (Sources);
+/*
                 m_rmvData = new TRmvcData();
                 int nRecords = m_rmvData.Parse(Lines);
+                if (nRecords > 0) {
+                    PlotData (m_rmvData.Data);
+                }
                 txtbxRecords.Text = nRecords.ToString();
-                chartDose.Series.Clear();
-				chartRate.Series.Clear();
-			}
+*/
+}
             //clboxDose.Items.Clear();
-            CalcRate ();
-            GetDeviceDose();
-            CalculatedAccumDose();
+            //CalcRate ();
+            //GetDeviceDose();
+            //CalculatedAccumDose();
 		}
 //-----------------------------------------------------------------------------
+		private void AddRrecordToSource (TRmvcRecord rec, string strSrc) {
+			TSourceData src = null;
+			if (Sources == null) {
+				src = new TSourceData (strSrc);
+				Sources = new TSourceData[1];
+				Sources[0] = src;
+			}
+			else {
+				src = TMisc.FindSourceByName (Sources, strSrc);
+				if (src == null) {
+					src = new TSourceData (strSrc);
+					TSourceData[] a = new TSourceData[1];
+					a[0] = src;
+					Sources = Sources.Concat(a).ToArray ();
+				}
+			}
+			src.AddRecord (new TRmvcRecord (rec));
+		}
+//-----------------------------------------------------------------------------
+        private void PlotData (TSourceData[] aSources) {
+            chartDose.Series.Clear();
+            chartRate.Series.Clear();
+            if (aSources != null) {
+                for (int n=0 ; n < aSources.Length ; n++) {
+                    PlotRates (aSources[n]);
+                    PlotDose (aSources[n]);//.Source, aSources[n].GetDose());
+                }
+            }
+        }
+//-----------------------------------------------------------------------------
+        private void PlotRates (TSourceData sd) {
+            PlotRmvcValue (chartRate, sd, ERmvcValue.E_Rate, clboxRates);
+
+        }
+//-----------------------------------------------------------------------------
+        private void PlotDose (TSourceData sd) {
+            PlotRmvcValue (chartDose, sd, ERmvcValue.E_Dose, clboxDose);
+            PlotRmvcValue (chartDose, sd, ERmvcValue.E_CalcDose, clboxDose);
+        }
+//-----------------------------------------------------------------------------
+        private void PlotRmvcValue (Chart chart, TSourceData sd, ERmvcValue value_type, CheckedListBox clbox=null) {
+        //private void PlotRmvcValue (Chart chart, TSourceData sd, ERmvcValue value_type, Panel panel=null) {
+            string strTitle = GetSeriesTitle (sd.Source, value_type);
+
+            Series ser = AddSeriesToChart (chart, strTitle);
+            if (ser != null) {
+                //AddSeriesCheckbox (panel, ser);
+                AddSeriesToCheckedListBox (clbox, ser);
+                ser.Points.Clear();
+                for (int n=0 ; n < sd.Data.Length ; n++) {
+                    TRmvcRecord rec = (TRmvcRecord) sd.Data[n];
+                    //ser.Points.AddXY (rec.SampleTime, rec.Rate);
+                    ser.Points.AddXY (rec.SampleTime, rec.GetValue (value_type));
+                }
+            }
+        }
+//---------------------------------------------------------------------------
+        public static int FindItem (CheckedListBox clbox, string str) {
+            int n, nFound=-1;
+
+            for (n=0 ; (n < clbox.Items.Count) && (nFound < 0) ; n++) {
+                string s = clbox.Items[n].ToString ();
+                if (s == str)
+                    nFound = n;
+            }
+            return (nFound);
+        }
+//---------------------------------------------------------------------------
+        private void AddSeriesCheckbox (Panel panel, Series ser) {
+            CheckBox cbox, cboxFound=null;
+            for (int n=0 ; (n < panel.Controls.Count) && (cboxFound == null) ; n++) {
+                cbox = (CheckBox) panel.Controls[n];
+                if (cbox.Text == ser.LegendText)
+                    cboxFound = cbox;
+            }
+            if (cboxFound == null) {
+                int nTop = panel.Controls.Count * 25;
+                cbox = new CheckBox();
+                cbox.Text = ser.LegendText;
+                cbox.Parent = panel;
+                cbox.Checked = true;
+                cbox.Top = nTop;
+                cbox.CheckedChanged += new EventHandler(this.OnCheckboxClick);
+            }
+        }
+//---------------------------------------------------------------------------
+        private void AddSeriesToCheckedListBox (CheckedListBox clbox, Series ser) {
+            if (clbox != null) {
+                int idx = FindItem (clbox, ser.LegendText);
+                if (idx >= 0)
+                    clbox.Items[idx] = ser.LegendText;
+                else
+                    clbox.Items.Add (ser.LegendText, true);
+            }
+        }
+//---------------------------------------------------------------------------
+        private Series AddSeriesToChart (Chart chart, string strTitle) {
+            Series ser = TMisc.FindSeriesByName (chart, strTitle);
+            if (ser == null) {
+                ser = TMisc.StartFastLineSeries(strTitle);
+                chart.Series.Add(ser);
+            }
+            return (ser);
+        }
+//---------------------------------------------------------------------------
+        public string GetSeriesTitle (string strSource, ERmvcValue value_type) {
+            string strTitle = strSource + " ";
+            if (value_type == ERmvcValue.E_Rate)
+                strTitle += "Rate";
+            else if (value_type == ERmvcValue.E_Dose)
+                strTitle += "Dose";
+            else
+                strTitle += "Calculated Dose";
+            return (strTitle);
+        }
+//---------------------------------------------------------------------------
 		private void btnRate_Click(object sender, EventArgs e)
 		{
             CalcRate ();
@@ -301,6 +440,91 @@ namespace RmvDose
 		{
             Series ser = TMisc.FindSeriesByName (chartDose, "Normalized Dose");
             EditSeries (ser);
+		}
+//-----------------------------------------------------------------------------
+		private void clboxRates_ItemCheck(object sender, ItemCheckEventArgs e) {
+            ShowSeriesByCheck ((CheckedListBox)sender, chartRate);
+        }
+//-----------------------------------------------------------------------------
+		private void ShowSeriesByCheck (CheckedListBox clbox, Chart chart) {
+            for (int n=0 ; n < clbox.Items.Count ; n++) {
+                string str = (string) clbox.Items[n];
+                bool fChecked = clbox.GetItemChecked(n);
+                Series ser = TMisc.FindSeriesByName (chart, str);
+                if (ser != null)
+                    ser.Enabled = !fChecked;//clbox.GetItemChecked(n);
+            }
+        }
+//-----------------------------------------------------------------------------
+		private void clboxDose_ItemCheck(object sender, ItemCheckEventArgs e) {
+            ShowSeriesByCheck ((CheckedListBox)sender, chartDose);
+		}
+//-----------------------------------------------------------------------------
+		private void OnCheckboxClick(object sender, EventArgs e) {
+            CheckBox cbox = (CheckBox)sender;
+            Panel panel = (Panel) cbox.Parent;
+		}
+//-----------------------------------------------------------------------------
+		private void clboxDose_ItemCheck_1(object sender, ItemCheckEventArgs e) {
+            ShowCheckedSeries ((CheckedListBox) sender, chartDose, e);
+        }
+//-----------------------------------------------------------------------------
+        private void ShowCheckedSeries (CheckedListBox clbox, Chart chart, ItemCheckEventArgs e) {
+            Series ser = TMisc.FindSeriesByName (chart, (string) clbox.Items[e.Index]);
+            ser.Enabled = e.NewValue == CheckState.Checked;
+		}
+//-----------------------------------------------------------------------------
+		private void clboxRates_ItemCheck_1(object sender, ItemCheckEventArgs e) {
+            ShowCheckedSeries ((CheckedListBox) sender, chartRate, e);
+		}
+//-----------------------------------------------------------------------------
+		private void clboxRates_DoubleClick(object sender, EventArgs e) {
+            MouseEventArgs me = (MouseEventArgs)e;
+            int idx = ((CheckedListBox)sender).IndexFromPoint(me.X, me.Y);
+            CheckedListBox clbox = (CheckedListBox)sender;
+            Series ser = TMisc.FindSeriesByName (chartRate, (string) clbox.Items[idx]);
+            EditSeries (ser);
+		}
+//-----------------------------------------------------------------------------
+		private void clboxDose_DoubleClick(object sender, EventArgs e) {
+            MouseEventArgs me = (MouseEventArgs)e;
+            int idx = ((CheckedListBox)sender).IndexFromPoint(me.X, me.Y);
+            CheckedListBox clbox = (CheckedListBox)sender;
+            Series ser = TMisc.FindSeriesByName (chartDose, (string) clbox.Items[idx]);
+            EditSeries (ser);
+
+		}
+//-----------------------------------------------------------------------------
+		private void clboxRates_MouseMove(object sender, MouseEventArgs e) {
+            m_ptMouse = (Point)e.Location;
+		}
+//-----------------------------------------------------------------------------
+		private void clboxRates_MouseUp(object sender, MouseEventArgs e) {
+            PrepareSeries (e, chartRate, clboxRates);
+        }
+        private void PrepareSeries (MouseEventArgs e, Chart chart, CheckedListBox clbox) {
+            if (clbox.Items.Count > 0) {
+                int idx = clboxRates.SelectedIndex;
+                if (idx < 0)
+                    idx = clbox.IndexFromPoint(e.X, e.Y);
+                if (idx < 0)
+                    idx = 0;
+                if (idx >= 0) {
+                    string s = clbox.Items[idx].ToString();
+                    m_serEdit = TMisc.FindSeriesByName (chart, s);
+                }
+            }
+        }
+//-----------------------------------------------------------------------------
+		private void miEditSer_Click(object sender, EventArgs e) {
+            if (m_serEdit != null) {
+                EditSeries (m_serEdit);
+                m_serEdit = null;
+            }
+		}
+//-----------------------------------------------------------------------------
+		private void clboxDose_MouseUp(object sender, MouseEventArgs e) {
+            PrepareSeries (e, chartDose, clboxDose);
 		}
 //-----------------------------------------------------------------------------
 	}

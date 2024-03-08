@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+			this.components = new System.ComponentModel.Container();
 			System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
 			System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
 			System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
@@ -51,10 +52,15 @@
 			this.chartRate = new System.Windows.Forms.DataVisualization.Charting.Chart();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabRate = new System.Windows.Forms.TabPage();
+			this.clboxRates = new System.Windows.Forms.CheckedListBox();
 			this.btnSaveRate = new System.Windows.Forms.Button();
 			this.btnRateEdit = new System.Windows.Forms.Button();
 			this.btnCopyRate = new System.Windows.Forms.Button();
 			this.tabDose = new System.Windows.Forms.TabPage();
+			this.clboxDose = new System.Windows.Forms.CheckedListBox();
+			this.popupClbox = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.miEditSer = new System.Windows.Forms.ToolStripMenuItem();
+			this.btnNormSer = new System.Windows.Forms.Button();
 			this.btnCalcDoseSer = new System.Windows.Forms.Button();
 			this.btnSaveDose = new System.Windows.Forms.Button();
 			this.btnCopyDose = new System.Windows.Forms.Button();
@@ -63,12 +69,12 @@
 			this.btnCalcDose = new System.Windows.Forms.Button();
 			this.dlgSavePic = new System.Windows.Forms.SaveFileDialog();
 			this.btnAbout = new System.Windows.Forms.Button();
-			this.btnNormSer = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.gridCSV)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.chartRate)).BeginInit();
 			this.tabControl1.SuspendLayout();
 			this.tabRate.SuspendLayout();
 			this.tabDose.SuspendLayout();
+			this.popupClbox.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.chartDose)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -193,13 +199,13 @@
 			this.chartRate.ChartAreas.Add(chartArea1);
 			legend1.Name = "Legend1";
 			this.chartRate.Legends.Add(legend1);
-			this.chartRate.Location = new System.Drawing.Point(6, 36);
+			this.chartRate.Location = new System.Drawing.Point(6, 70);
 			this.chartRate.Name = "chartRate";
 			series1.ChartArea = "ChartArea1";
 			series1.Legend = "Legend1";
 			series1.Name = "Series1";
 			this.chartRate.Series.Add(series1);
-			this.chartRate.Size = new System.Drawing.Size(401, 358);
+			this.chartRate.Size = new System.Drawing.Size(516, 324);
 			this.chartRate.TabIndex = 8;
 			this.chartRate.Text = "chart1";
 			// 
@@ -218,6 +224,7 @@
 			// 
 			// tabRate
 			// 
+			this.tabRate.Controls.Add(this.clboxRates);
 			this.tabRate.Controls.Add(this.btnSaveRate);
 			this.tabRate.Controls.Add(this.btnRateEdit);
 			this.tabRate.Controls.Add(this.btnCopyRate);
@@ -229,6 +236,18 @@
 			this.tabRate.TabIndex = 0;
 			this.tabRate.Text = "Rate";
 			this.tabRate.UseVisualStyleBackColor = true;
+			// 
+			// clboxRates
+			// 
+			this.clboxRates.ContextMenuStrip = this.popupClbox;
+			this.clboxRates.FormattingEnabled = true;
+			this.clboxRates.Location = new System.Drawing.Point(399, 3);
+			this.clboxRates.Name = "clboxRates";
+			this.clboxRates.Size = new System.Drawing.Size(120, 64);
+			this.clboxRates.TabIndex = 14;
+			this.clboxRates.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.clboxRates_ItemCheck_1);
+			this.clboxRates.MouseMove += new System.Windows.Forms.MouseEventHandler(this.clboxRates_MouseMove);
+			this.clboxRates.MouseUp += new System.Windows.Forms.MouseEventHandler(this.clboxRates_MouseUp);
 			// 
 			// btnSaveRate
 			// 
@@ -248,6 +267,7 @@
 			this.btnRateEdit.TabIndex = 12;
 			this.btnRateEdit.Text = "Rate Series...";
 			this.btnRateEdit.UseVisualStyleBackColor = true;
+			this.btnRateEdit.Visible = false;
 			this.btnRateEdit.Click += new System.EventHandler(this.btnRateSer_Click);
 			// 
 			// btnCopyRate
@@ -262,6 +282,7 @@
 			// 
 			// tabDose
 			// 
+			this.tabDose.Controls.Add(this.clboxDose);
 			this.tabDose.Controls.Add(this.btnNormSer);
 			this.tabDose.Controls.Add(this.btnCalcDoseSer);
 			this.tabDose.Controls.Add(this.btnSaveDose);
@@ -276,14 +297,52 @@
 			this.tabDose.Text = "Dose";
 			this.tabDose.UseVisualStyleBackColor = true;
 			// 
+			// clboxDose
+			// 
+			this.clboxDose.ContextMenuStrip = this.popupClbox;
+			this.clboxDose.FormattingEnabled = true;
+			this.clboxDose.Location = new System.Drawing.Point(373, 2);
+			this.clboxDose.Name = "clboxDose";
+			this.clboxDose.Size = new System.Drawing.Size(149, 64);
+			this.clboxDose.TabIndex = 15;
+			this.clboxDose.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.clboxDose_ItemCheck_1);
+			this.clboxDose.DoubleClick += new System.EventHandler(this.clboxDose_DoubleClick);
+			this.clboxDose.MouseUp += new System.Windows.Forms.MouseEventHandler(this.clboxDose_MouseUp);
+			// 
+			// popupClbox
+			// 
+			this.popupClbox.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miEditSer});
+			this.popupClbox.Name = "popupClbox";
+			this.popupClbox.Size = new System.Drawing.Size(137, 26);
+			// 
+			// miEditSer
+			// 
+			this.miEditSer.Name = "miEditSer";
+			this.miEditSer.Size = new System.Drawing.Size(136, 22);
+			this.miEditSer.Text = "Edit Series...";
+			this.miEditSer.Click += new System.EventHandler(this.miEditSer_Click);
+			// 
+			// btnNormSer
+			// 
+			this.btnNormSer.Location = new System.Drawing.Point(6, 33);
+			this.btnNormSer.Name = "btnNormSer";
+			this.btnNormSer.Size = new System.Drawing.Size(75, 23);
+			this.btnNormSer.TabIndex = 14;
+			this.btnNormSer.Text = "Normalized...";
+			this.btnNormSer.UseVisualStyleBackColor = true;
+			this.btnNormSer.Visible = false;
+			this.btnNormSer.Click += new System.EventHandler(this.btnNormSer_Click);
+			// 
 			// btnCalcDoseSer
 			// 
-			this.btnCalcDoseSer.Location = new System.Drawing.Point(270, 6);
+			this.btnCalcDoseSer.Location = new System.Drawing.Point(3, 51);
 			this.btnCalcDoseSer.Name = "btnCalcDoseSer";
 			this.btnCalcDoseSer.Size = new System.Drawing.Size(124, 23);
 			this.btnCalcDoseSer.TabIndex = 13;
 			this.btnCalcDoseSer.Text = "Calculated Series...";
 			this.btnCalcDoseSer.UseVisualStyleBackColor = true;
+			this.btnCalcDoseSer.Visible = false;
 			this.btnCalcDoseSer.Click += new System.EventHandler(this.btnCalcDoseSer_Click);
 			// 
 			// btnSaveDose
@@ -314,6 +373,7 @@
 			this.btnDoseSer.TabIndex = 10;
 			this.btnDoseSer.Text = "Dose Series...";
 			this.btnDoseSer.UseVisualStyleBackColor = true;
+			this.btnDoseSer.Visible = false;
 			this.btnDoseSer.Click += new System.EventHandler(this.btnDoseSer_Click);
 			// 
 			// chartDose
@@ -325,13 +385,13 @@
 			this.chartDose.ChartAreas.Add(chartArea2);
 			legend2.Name = "Legend1";
 			this.chartDose.Legends.Add(legend2);
-			this.chartDose.Location = new System.Drawing.Point(6, 30);
+			this.chartDose.Location = new System.Drawing.Point(6, 70);
 			this.chartDose.Name = "chartDose";
 			series2.ChartArea = "ChartArea1";
 			series2.Legend = "Legend1";
 			series2.Name = "Series1";
 			this.chartDose.Series.Add(series2);
-			this.chartDose.Size = new System.Drawing.Size(513, 363);
+			this.chartDose.Size = new System.Drawing.Size(516, 324);
 			this.chartDose.TabIndex = 9;
 			this.chartDose.Text = "chart1";
 			// 
@@ -361,16 +421,6 @@
 			this.btnAbout.UseVisualStyleBackColor = true;
 			this.btnAbout.Click += new System.EventHandler(this.btnAbout_Click);
 			// 
-			// btnNormSer
-			// 
-			this.btnNormSer.Location = new System.Drawing.Point(400, 6);
-			this.btnNormSer.Name = "btnNormSer";
-			this.btnNormSer.Size = new System.Drawing.Size(75, 23);
-			this.btnNormSer.TabIndex = 14;
-			this.btnNormSer.Text = "Normalized...";
-			this.btnNormSer.UseVisualStyleBackColor = true;
-			this.btnNormSer.Click += new System.EventHandler(this.btnNormSer_Click);
-			// 
 			// main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -396,6 +446,7 @@
 			this.tabControl1.ResumeLayout(false);
 			this.tabRate.ResumeLayout(false);
 			this.tabDose.ResumeLayout(false);
+			this.popupClbox.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.chartDose)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -432,6 +483,10 @@
 		private System.Windows.Forms.SaveFileDialog dlgSavePic;
 		private System.Windows.Forms.Button btnAbout;
 		private System.Windows.Forms.Button btnNormSer;
+		private System.Windows.Forms.CheckedListBox clboxRates;
+		private System.Windows.Forms.CheckedListBox clboxDose;
+		private System.Windows.Forms.ContextMenuStrip popupClbox;
+		private System.Windows.Forms.ToolStripMenuItem miEditSer;
 	}
 }
 
