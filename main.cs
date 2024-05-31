@@ -359,11 +359,13 @@ namespace RmvDose
             EditSeries (ser);
 		}
 //-----------------------------------------------------------------------------
-		private void EditSeries (Series ser) {
+		private bool EditSeries (Series ser) {
+            bool fEdit = false;
             dlgEditSeries dlg = new dlgEditSeries();
             Series serEdit = TMisc.InitSeries (ser);
-            if (dlg.Execute(serEdit))
+            if ((fEdit = dlg.Execute(serEdit)) == true)
                 AssignSerParams (ser, serEdit);
+            return (fEdit);
         }
 //-----------------------------------------------------------------------------
         private void CopyToClipboard (Chart chart) {
@@ -439,7 +441,18 @@ namespace RmvDose
 		private void btnNormSer_Click(object sender, EventArgs e)
 		{
             Series ser = TMisc.FindSeriesByName (chartDose, "Normalized Dose");
-            EditSeries (ser);
+            if (ser == null)
+                ser = TMisc.StartFastLineSeries ("Normalized Dose");
+            if (ser != null) {            
+                ser.Color = Color.DarkGray;
+                Series serIC3, serPC;
+                serIC3 = TMisc.FindSeriesByName (chartDose, GetSeriesTitle ("Meter", ERmvcValue.E_Dose));
+                serPC = TMisc.FindSeriesByName (chartDose, GetSeriesTitle ("Meter", ERmvcValue.E_CalcDose));
+                for (int n=0 ; n < serPC.Points.Count ; n++)
+                    ser.Points.AddXY (serPC.Points[n].XValue, serPC.Points[n].YValues[0] + serIC3.Points[0].YValues[0]);
+                chartDose.Series.Add (ser);
+                AddSeriesToCheckedListBox (clboxDose, ser);
+            }
 		}
 //-----------------------------------------------------------------------------
 		private void clboxRates_ItemCheck(object sender, ItemCheckEventArgs e) {
@@ -525,6 +538,31 @@ namespace RmvDose
 //-----------------------------------------------------------------------------
 		private void clboxDose_MouseUp(object sender, MouseEventArgs e) {
             PrepareSeries (e, chartDose, clboxDose);
+		}
+//-----------------------------------------------------------------------------
+		private void btnExport_Click(object sender, EventArgs e) {
+            if (dlgSaveCsv.ShowDialog() == DialogResult.OK) {
+                StreamWriter writer = null;
+                try {
+                    writer = new StreamWriter(dlgSaveCsv.FileName);
+                    string str;
+                    for (int n=0 ; n < chartDose.Series[0].Points.Count ; n++) {
+                        str = "";
+                        for (int y=0 ; y < chartDose.Series.Count ; y++) {
+                            str += chartDose.Series[y].Points[n].YValues[0].ToString() + ",";
+                        }
+                        str.TrimEnd(',');
+                        writer.WriteLine(str);
+                    }
+                }
+                catch (Exception ex) {
+                }
+                finally {
+                    if (writer != null)
+                        writer.Close();
+                    writer = null;
+                }
+            }
 		}
 //-----------------------------------------------------------------------------
 	}
