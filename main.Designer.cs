@@ -53,13 +53,14 @@
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabRate = new System.Windows.Forms.TabPage();
 			this.clboxRates = new System.Windows.Forms.CheckedListBox();
+			this.popupClbox = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.miEditSer = new System.Windows.Forms.ToolStripMenuItem();
 			this.btnSaveRate = new System.Windows.Forms.Button();
 			this.btnRateEdit = new System.Windows.Forms.Button();
 			this.btnCopyRate = new System.Windows.Forms.Button();
 			this.tabDose = new System.Windows.Forms.TabPage();
+			this.btnExport = new System.Windows.Forms.Button();
 			this.clboxDose = new System.Windows.Forms.CheckedListBox();
-			this.popupClbox = new System.Windows.Forms.ContextMenuStrip(this.components);
-			this.miEditSer = new System.Windows.Forms.ToolStripMenuItem();
 			this.btnNormSer = new System.Windows.Forms.Button();
 			this.btnCalcDoseSer = new System.Windows.Forms.Button();
 			this.btnSaveDose = new System.Windows.Forms.Button();
@@ -69,12 +70,13 @@
 			this.btnCalcDose = new System.Windows.Forms.Button();
 			this.dlgSavePic = new System.Windows.Forms.SaveFileDialog();
 			this.btnAbout = new System.Windows.Forms.Button();
+			this.dlgSaveCsv = new System.Windows.Forms.SaveFileDialog();
 			((System.ComponentModel.ISupportInitialize)(this.gridCSV)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.chartRate)).BeginInit();
 			this.tabControl1.SuspendLayout();
 			this.tabRate.SuspendLayout();
-			this.tabDose.SuspendLayout();
 			this.popupClbox.SuspendLayout();
+			this.tabDose.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.chartDose)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -249,6 +251,20 @@
 			this.clboxRates.MouseMove += new System.Windows.Forms.MouseEventHandler(this.clboxRates_MouseMove);
 			this.clboxRates.MouseUp += new System.Windows.Forms.MouseEventHandler(this.clboxRates_MouseUp);
 			// 
+			// popupClbox
+			// 
+			this.popupClbox.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miEditSer});
+			this.popupClbox.Name = "popupClbox";
+			this.popupClbox.Size = new System.Drawing.Size(137, 26);
+			// 
+			// miEditSer
+			// 
+			this.miEditSer.Name = "miEditSer";
+			this.miEditSer.Size = new System.Drawing.Size(136, 22);
+			this.miEditSer.Text = "Edit Series...";
+			this.miEditSer.Click += new System.EventHandler(this.miEditSer_Click);
+			// 
 			// btnSaveRate
 			// 
 			this.btnSaveRate.Location = new System.Drawing.Point(153, 7);
@@ -282,6 +298,7 @@
 			// 
 			// tabDose
 			// 
+			this.tabDose.Controls.Add(this.btnExport);
 			this.tabDose.Controls.Add(this.clboxDose);
 			this.tabDose.Controls.Add(this.btnNormSer);
 			this.tabDose.Controls.Add(this.btnCalcDoseSer);
@@ -297,6 +314,16 @@
 			this.tabDose.Text = "Dose";
 			this.tabDose.UseVisualStyleBackColor = true;
 			// 
+			// btnExport
+			// 
+			this.btnExport.Location = new System.Drawing.Point(249, 6);
+			this.btnExport.Name = "btnExport";
+			this.btnExport.Size = new System.Drawing.Size(75, 23);
+			this.btnExport.TabIndex = 16;
+			this.btnExport.Text = "Export...";
+			this.btnExport.UseVisualStyleBackColor = true;
+			this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
+			// 
 			// clboxDose
 			// 
 			this.clboxDose.ContextMenuStrip = this.popupClbox;
@@ -309,29 +336,14 @@
 			this.clboxDose.DoubleClick += new System.EventHandler(this.clboxDose_DoubleClick);
 			this.clboxDose.MouseUp += new System.Windows.Forms.MouseEventHandler(this.clboxDose_MouseUp);
 			// 
-			// popupClbox
-			// 
-			this.popupClbox.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.miEditSer});
-			this.popupClbox.Name = "popupClbox";
-			this.popupClbox.Size = new System.Drawing.Size(137, 26);
-			// 
-			// miEditSer
-			// 
-			this.miEditSer.Name = "miEditSer";
-			this.miEditSer.Size = new System.Drawing.Size(136, 22);
-			this.miEditSer.Text = "Edit Series...";
-			this.miEditSer.Click += new System.EventHandler(this.miEditSer_Click);
-			// 
 			// btnNormSer
 			// 
-			this.btnNormSer.Location = new System.Drawing.Point(6, 33);
+			this.btnNormSer.Location = new System.Drawing.Point(168, 6);
 			this.btnNormSer.Name = "btnNormSer";
 			this.btnNormSer.Size = new System.Drawing.Size(75, 23);
 			this.btnNormSer.TabIndex = 14;
 			this.btnNormSer.Text = "Normalized...";
 			this.btnNormSer.UseVisualStyleBackColor = true;
-			this.btnNormSer.Visible = false;
 			this.btnNormSer.Click += new System.EventHandler(this.btnNormSer_Click);
 			// 
 			// btnCalcDoseSer
@@ -367,7 +379,7 @@
 			// 
 			// btnDoseSer
 			// 
-			this.btnDoseSer.Location = new System.Drawing.Point(178, 6);
+			this.btnDoseSer.Location = new System.Drawing.Point(148, 51);
 			this.btnDoseSer.Name = "btnDoseSer";
 			this.btnDoseSer.Size = new System.Drawing.Size(86, 23);
 			this.btnDoseSer.TabIndex = 10;
@@ -421,6 +433,11 @@
 			this.btnAbout.UseVisualStyleBackColor = true;
 			this.btnAbout.Click += new System.EventHandler(this.btnAbout_Click);
 			// 
+			// dlgSaveCsv
+			// 
+			this.dlgSaveCsv.DefaultExt = "*.csv";
+			this.dlgSaveCsv.Filter = "CSV files (*.csv)|*.csv|XML files (*.xml)|*.xml";
+			// 
 			// main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -445,8 +462,8 @@
 			((System.ComponentModel.ISupportInitialize)(this.chartRate)).EndInit();
 			this.tabControl1.ResumeLayout(false);
 			this.tabRate.ResumeLayout(false);
-			this.tabDose.ResumeLayout(false);
 			this.popupClbox.ResumeLayout(false);
+			this.tabDose.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.chartDose)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -487,6 +504,8 @@
 		private System.Windows.Forms.CheckedListBox clboxDose;
 		private System.Windows.Forms.ContextMenuStrip popupClbox;
 		private System.Windows.Forms.ToolStripMenuItem miEditSer;
+		private System.Windows.Forms.Button btnExport;
+		private System.Windows.Forms.SaveFileDialog dlgSaveCsv;
 	}
 }
 
