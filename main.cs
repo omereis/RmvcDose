@@ -1,6 +1,15 @@
 ﻿/*****************************************************************************\
 |                                  main.cs                                    |
 \*****************************************************************************/
+
+/*
+ * אוצר החייל
+ * 363
+ * 599800
+ * 70500
+ * השם בהערות
+ * 054-766-7437
+*/
 using System;
 using System.Collections.Generic;
 using System.Collections;
@@ -48,6 +57,7 @@ namespace RmvDose
             if (dlgOpenCsv.ShowDialog() == DialogResult.OK) {
                 ReadRmvcCsvToGrid (dlgOpenCsv.FileName, gridCSV);
                 txtbxFile.Text = dlgOpenCsv.FileName;
+				Parse ();
             }
         }
 //-----------------------------------------------------------------------------
@@ -125,6 +135,25 @@ namespace RmvDose
 //-----------------------------------------------------------------------------
 		private void btnParse_Click(object sender, EventArgs e)
 		{
+			Parse ();
+/*
+			TRmvcRecord rec;
+            string strSource="";
+            Sources = null;//new TSourceData[1];
+            if (Lines.Count > 0) {
+                rec = new TRmvcRecord();
+                for (int n=0 ; n < Lines.Count ; n++) {
+                    string[] astr = (string[]) Lines[n];
+                    if (rec.ParseFromRmvc (astr, ref strSource))
+                        AddRrecordToSource (rec, strSource);
+                }
+                if (Sources != null)
+                    if (Sources.Length > 0)
+                        PlotData (Sources);
+*/
+		}
+//-----------------------------------------------------------------------------
+		public void Parse () {
             TRmvcRecord rec;
             string strSource="";
             Sources = null;//new TSourceData[1];
@@ -138,15 +167,7 @@ namespace RmvDose
                 if (Sources != null)
                     if (Sources.Length > 0)
                         PlotData (Sources);
-/*
-                m_rmvData = new TRmvcData();
-                int nRecords = m_rmvData.Parse(Lines);
-                if (nRecords > 0) {
-                    PlotData (m_rmvData.Data);
-                }
-                txtbxRecords.Text = nRecords.ToString();
-*/
-}
+		}
             //clboxDose.Items.Clear();
             //CalcRate ();
             //GetDeviceDose();
@@ -563,6 +584,107 @@ namespace RmvDose
                     writer = null;
                 }
             }
+		}
+//-----------------------------------------------------------------------------
+		private void button1_Click(object sender, EventArgs e) {
+			if (chartRate.Series.Count > 0) {
+				if (chartRate.Series[0].Points.Count > 0) {
+					double dAvg = 0;
+					int n;
+
+					for (n=0 ; n < chartRate.Series[0].Points.Count ; n++)
+						dAvg += chartRate.Series[0].Points[n].YValues[0];
+					dAvg /= (double) chartRate.Series[0].Points.Count;
+					int nStart = FindStart (dAvg);
+					int nEnd = FindEnd (dAvg);
+					if ((nStart > 0) && (nEnd > 0)) {
+						dAvg = 0;
+						for (n=nStart ; n < nEnd ; n++)
+							dAvg += chartRate.Series[0].Points[n].YValues[0];
+						dAvg /= (double) (nEnd - nStart);
+			            Series serAvg = AddSeriesToChart (chartRate, "Average");
+						serAvg.Color = Color.Red;
+						serAvg.BorderWidth = 2;
+						for (n=nStart ; n < nEnd ; n++) {
+							double x = chartRate.Series[0].Points[n].XValue;
+							serAvg.Points.AddXY (x, dAvg);
+						}
+						AddSeriesToCheckedListBox (clboxRates, serAvg);
+					}
+				}
+			}
+		}
+//-----------------------------------------------------------------------------
+		private int FindStart (double dAvg) {
+			int n, nStart = -1;
+			double y;
+
+			for (n=0 ; (n < chartRate.Series[0].Points.Count) && (nStart < 0) ; n++) {
+				y = chartRate.Series[0].Points[n].YValues[0];
+				//if (Math.Abs (chartRate.Series[0].Points[n].YValues[0]) > dAvg)
+				if (chartRate.Series[0].Points[n].YValues[0] > dAvg)
+					nStart = n;
+			}
+			return (nStart);
+		}
+//-----------------------------------------------------------------------------
+		private int FindEnd (double dAvg) {
+			int n, nEnd = -1;
+
+			for (n=chartRate.Series[0].Points.Count-1 ; (n >= 0) && (nEnd < 0) ; n--)
+				if (chartRate.Series[0].Points[n].YValues[0] > dAvg)
+					nEnd = n;
+			return (nEnd);
+		}
+//-----------------------------------------------------------------------------
+		public static double PercentDiff (double d1, double d2) {
+			double dDiff = 1e7;
+			if (d2 != 0) {
+				dDiff = 100 * (d1 - d2) / d2;
+			}
+			return (dDiff);
+		}
+//-----------------------------------------------------------------------------
+		private void btnAnalyze_Click(object sender, EventArgs e) {
+		   if (chartRate.Series.Count > 0) {
+			   if (chartRate.Series[0].Points.Count > 0) {
+				   double dAvg = 0, dMax, dMin;
+				   int n;
+
+				   for (n=0 ; n < chartRate.Series[0].Points.Count ; n++)
+					   dAvg += chartRate.Series[0].Points[n].YValues[0];
+				   dAvg /= (double) chartRate.Series[0].Points.Count;
+				   int nStart = FindStart (dAvg);
+				   int nEnd = FindEnd (dAvg);
+				   if ((nStart > 0) && (nEnd > 0)) {
+					   dAvg = 0;
+					   for (n=nStart ; n < nEnd ; n++)
+						   dAvg += chartRate.Series[0].Points[n].YValues[0];
+					   dAvg /= (double) (nEnd - nStart);
+					   dMax = dMin = dAvg;
+					   for (n=nStart ; n < nEnd ; n++) {
+							double y = chartRate.Series[0].Points[n].YValues[0];
+							if (y > dMax)
+								dMax = y;
+							if (y < dAvg)
+								dMin = y;
+						}
+					   Series serAvg = AddSeriesToChart (chartRate, "Average");
+					   serAvg.Color = Color.Red;
+					   serAvg.BorderWidth = 2;
+					   for (n=nStart ; n < nEnd ; n++) {
+						   double x = chartRate.Series[0].Points[n].XValue;
+						   serAvg.Points.AddXY (x, dAvg);
+					   }
+					   AddSeriesToCheckedListBox (clboxRates, serAvg);
+					   txtbxAvg.Text = dAvg.ToString ("0.00");
+					   txtbxMax.Text = dMax.ToString ("0.00");
+					   txtbxMin.Text = dMin.ToString ("0.00");
+					   txtbxPctMax.Text = String.Format ("{0:0.00}%", PercentDiff (dMax, dAvg));
+					   txtbxPctMin.Text = String.Format ("{0:0.00}%", PercentDiff (dAvg, dMin));
+				   }
+			   }
+		   }
 		}
 //-----------------------------------------------------------------------------
 	}
