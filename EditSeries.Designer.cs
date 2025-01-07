@@ -28,8 +28,8 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-			System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+			System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+			System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
 			this.chartDemo = new System.Windows.Forms.DataVisualization.Charting.Chart();
 			this.btnOK = new System.Windows.Forms.Button();
 			this.btnCancel = new System.Windows.Forms.Button();
@@ -38,19 +38,21 @@
 			this.btnColor = new System.Windows.Forms.Button();
 			this.dlgEditColor = new System.Windows.Forms.ColorDialog();
 			this.panelColor = new System.Windows.Forms.Panel();
+			this.label2 = new System.Windows.Forms.Label();
+			this.comboStyle = new System.Windows.Forms.ComboBox();
 			((System.ComponentModel.ISupportInitialize)(this.chartDemo)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.udWidth)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// chartDemo
 			// 
-			chartArea1.Name = "ChartArea1";
-			this.chartDemo.ChartAreas.Add(chartArea1);
+			chartArea5.Name = "ChartArea1";
+			this.chartDemo.ChartAreas.Add(chartArea5);
 			this.chartDemo.Location = new System.Drawing.Point(84, 61);
 			this.chartDemo.Name = "chartDemo";
-			series1.ChartArea = "ChartArea1";
-			series1.Name = "Series1";
-			this.chartDemo.Series.Add(series1);
+			series5.ChartArea = "ChartArea1";
+			series5.Name = "Series1";
+			this.chartDemo.Series.Add(series5);
 			this.chartDemo.Size = new System.Drawing.Size(508, 355);
 			this.chartDemo.TabIndex = 0;
 			this.chartDemo.Text = "chart1";
@@ -126,13 +128,41 @@
 			this.panelColor.TabIndex = 6;
 			this.panelColor.Click += new System.EventHandler(this.panelColor_Click);
 			// 
+			// label2
+			// 
+			this.label2.AutoSize = true;
+			this.label2.Location = new System.Drawing.Point(431, 26);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(30, 13);
+			this.label2.TabIndex = 7;
+			this.label2.Text = "Style";
+			// 
+			// comboStyle
+			// 
+			this.comboStyle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.comboStyle.FormattingEnabled = true;
+			this.comboStyle.Items.AddRange(new object[] {
+            "Solid",
+            "Dash",
+            "Dot",
+            "DashDot",
+            "DashDotDot"});
+			this.comboStyle.Location = new System.Drawing.Point(471, 20);
+			this.comboStyle.Name = "comboStyle";
+			this.comboStyle.Size = new System.Drawing.Size(121, 21);
+			this.comboStyle.TabIndex = 8;
+			this.comboStyle.DropDown += new System.EventHandler(this.comboStyle_DropDown);
+			this.comboStyle.DropDownClosed += new System.EventHandler(this.comboStyle_DropDownClosed);
+			// 
 			// dlgEditSeries
 			// 
 			this.AcceptButton = this.btnOK;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.btnCancel;
-			this.ClientSize = new System.Drawing.Size(800, 469);
+			this.ClientSize = new System.Drawing.Size(616, 469);
+			this.Controls.Add(this.comboStyle);
+			this.Controls.Add(this.label2);
 			this.Controls.Add(this.panelColor);
 			this.Controls.Add(this.btnColor);
 			this.Controls.Add(this.label1);
@@ -164,5 +194,7 @@
 		private System.Windows.Forms.Button btnColor;
 		private System.Windows.Forms.ColorDialog dlgEditColor;
 		private System.Windows.Forms.Panel panelColor;
+		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.ComboBox comboStyle;
 	}
 }

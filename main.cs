@@ -223,6 +223,7 @@ namespace RmvDose
                 //AddSeriesCheckbox (panel, ser);
                 AddSeriesToCheckedListBox (clbox, ser);
                 ser.Points.Clear();
+				//ser.BorderDashStyle = ChartDashStyle.Dot;
                 for (int n=0 ; n < sd.Data.Length ; n++) {
                     TRmvcRecord rec = (TRmvcRecord) sd.Data[n];
                     //ser.Points.AddXY (rec.SampleTime, rec.Rate);
@@ -331,6 +332,7 @@ namespace RmvDose
 		private void AssignSerParams (Series serTarget, Series serDemo) {
             serTarget.Color = serDemo.Color;
             serTarget.BorderWidth = serDemo.BorderWidth;
+			serTarget.BorderDashStyle = serDemo.BorderDashStyle;
 }
 //-----------------------------------------------------------------------------
 		private void btnCalcDose_Click(object sender, EventArgs e)
@@ -670,8 +672,10 @@ namespace RmvDose
 								dMin = y;
 						}
 					   Series serAvg = AddSeriesToChart (chartRate, "Average");
-					   serAvg.Color = Color.Red;
-					   serAvg.BorderWidth = 2;
+					   serAvg.Color = Color.Green;
+					   serAvg.BorderDashStyle = ChartDashStyle.Dash;
+					   //serAvg.Color = Color.Red;
+					   //serAvg.BorderWidth = 2;
 					   for (n=nStart ; n < nEnd ; n++) {
 						   double x = chartRate.Series[0].Points[n].XValue;
 						   serAvg.Points.AddXY (x, dAvg);
@@ -686,6 +690,10 @@ namespace RmvDose
 			   }
 		   }
 		}
-//-----------------------------------------------------------------------------
+
+		private void popupClbox_Opening(object sender, CancelEventArgs e) {
+
+		}
+		//-----------------------------------------------------------------------------
 	}
 }

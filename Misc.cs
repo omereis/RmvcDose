@@ -56,6 +56,7 @@ namespace RotemRadiation
 			serNew.Color = ser.Color;
 			serNew.BorderWidth = ser.BorderWidth;
 			serNew.BorderColor = ser.BorderColor;
+			serNew.BorderDashStyle = ser.BorderDashStyle;
 			Random rnd = new Random();
 			for (int n=0 ; n < 100 ;  n++) 
 				serNew.Points.AddY (rnd.NextDouble ());
